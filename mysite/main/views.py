@@ -20,11 +20,13 @@ def view_posts(request):
     """
 
     posts = Post.objects.all()
+    print(posts)
     context = {
         'posts': posts
     }
     
-    return JsonResponse(context)
+    return HttpResponse('View Posts')
+
 
 @login_required
 def manage_posts(request):
@@ -36,6 +38,7 @@ def manage_posts(request):
     Returns:
         A template that displays the user's posts
     """
+
 
 @login_required
 def create_post(request):
@@ -98,6 +101,7 @@ def view_post(request, post_id: int):
         post_id (int): The ID of the post to view
     """
 
+
 @login_required
 def rate_post(request, post_id: int):
     """Endpoint to send a rating for a post
@@ -106,6 +110,7 @@ def rate_post(request, post_id: int):
         request (HTTPRequest): Request sent in from the browser
         post_id (int): The ID of the post to rate
     """
+
 
 @login_required
 def manage_favorite(request, post_id):
