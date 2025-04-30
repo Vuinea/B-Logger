@@ -12,6 +12,12 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_average_rating(self) -> float:
+        ratings = Rating.objects.filter(post=self)
+        if ratings.exists():
+            return round(sum(rating.rating for rating in ratings) / ratings.count())
+        return 0
 
 
 class Favorite(models.Model):
