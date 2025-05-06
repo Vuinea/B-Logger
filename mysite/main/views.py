@@ -3,11 +3,12 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from .models import Post, Favorite, User, Rating
 from .forms import PostForm, RatingForm
+from .utils import get_keyboard_adjacency
 
 # Create your views here.
 
 def index(request):
-    return HttpResponse('hello world')
+    return render(request, 'index.html')
 
 
 def view_posts(request):
@@ -26,7 +27,7 @@ def view_posts(request):
         'posts': [post.title for post in posts]
     }
     
-    return JsonResponse(context)
+    return render(request, 'posts/posts.html', context)
 
 
 @login_required
@@ -144,7 +145,7 @@ def delete_post(request, post_id: int):
     return HttpResponse('Post deleted successfully')
 
 
-def search_posts(request, search_query: str):
+def search_posts(request):
     """Search for posts based on a query
     
     Args:
@@ -157,14 +158,23 @@ def search_posts(request, search_query: str):
     """
 
     # TODO: make this a lot more advanced obviously
-    # Get all posts that match the search query
+    keys = get_keyboard_adjacency()
+    # Get the search query from the request
+    search_query = request.GET.get('q').lower().strip()
+    tokens = search_query.split('-')
     posts = Post.objects.filter(title__icontains=search_query)
+
+    # Get all posts that match the search query
+    # posts = Post.objects.exclude(creator=request.user)
+
 
     # Render the template with the search results
     context = {
         'posts': posts,
         'search_query': search_query,
     }
+
+    print(posts)
 
     return HttpResponse('Search Posts')
 
