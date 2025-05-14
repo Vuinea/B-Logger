@@ -2,6 +2,8 @@
     --main-bg: #1E1E1E;
     --main-color: #E0E0E0;
     --navbar-bg: #424242;
+    --primary-bold: #58CAF4;
+    --card-color: #292929;
 }
 
 body {
@@ -29,6 +31,74 @@ body {
 
 .auth-link:hover {
     text-decoration: underline;
+}
+
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.search-container {
+    padding: 0.5rem;
+    background-color: var(--card-color);
+    border-radius: 5px;
+    width: 30rem;
+    display: flex;
+    
+}
+
+#search-input {
+    background-color: inherit;
+    color: white;
+    border: none;
+    width: 100%;
+}
+
+#search-btn {
+    color: white;
+    background-color: inherit;
+    border: none;
+}
+
+.tabs {
+    margin-bottom: 1rem;
+}
+
+.tab {
+    width: 10rem;
+    height: 1rem;
+    padding: 1rem;
+    padding-bottom: 2rem;
+    border: none;
+    background-color: var(--main-bg);
+    color: var(--main-color);
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.selected-tab {
+    color: var(--primary-bold);
+    border-bottom: 2px solid var(--primary-bold);
+}
+
+
+.post-card {
+    background-color: var(--card-color);
+    color: var(white);
+    min-width: 10rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23); 
+    list-style-type: none;
+}
+
+.card-bottom {
+    font-weight: bold;
+    text-transform: capitalize;
 }
 
 

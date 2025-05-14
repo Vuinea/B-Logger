@@ -3,10 +3,48 @@
 {% block title %}Posts{% endblock %}
 
 {% block content %}
-    <h1 class="text-center">Posts</h1>
-    <ul>
-        {% for post in posts %}
-            <li>{{ post }}</li>
-        {% endfor %}
-    </ul>
+    <div class="center-container">
+        <h1>Posts</h1>
+        <div class="search-container">
+            <input autocomplete="off" type="text" id="search-input" placeholder="Search posts...">
+            <button id="search-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                </svg>
+            </button>
+        </div>
+        <div class="tabs">
+            <button id="all-posts-tab" class="tab">
+                <p>All Posts</p>
+            </button>
+            {% if user.is_authenticated %}
+                <button id="favorites-tab" class="tab">
+                    <p>Favorites</p>
+                </button>
+            {% endif %}
+        </div>
+        <ul id="all-posts-list">
+            {% for post in posts %}
+                <li class="post-card">
+                    <div class="card-top">
+                        {{ post }}
+
+                    </div>
+                    <div class="card-botom">
+                        
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+        {% if user.is_authenticated %}
+            <ul id="favorites-list">
+                {% for post in favorites %}
+                    <li class="post-card">{{ post }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+{% load static %}
+<script src="{% static 'js/posts.js' %}"></script>
 {% endblock %}

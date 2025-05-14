@@ -22,9 +22,13 @@ def view_posts(request):
     """
 
     posts = Post.objects.all()
-    # print(posts)
+    if request.user.is_authenticated:
+        favorites = Favorite.objects.filter(user=request.user)
+    else:
+        favorites = []
     context = {
-        'posts': [post.title for post in posts]
+        'posts': [post.title for post in posts],
+        'favorites': [favorite.post.title for favorite in favorites],
     }
     
     return render(request, 'posts/posts.html', context)
