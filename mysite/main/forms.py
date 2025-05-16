@@ -13,6 +13,7 @@ class PostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         from .models import Category
         self.fields['categories'].queryset = Category.objects.all()
+        self.fields['content'].required = False
 
     def clean_title(self):
         title = self.cleaned_data.get('title')

@@ -93,7 +93,17 @@ def create_post(request):
     """
     user = request.user
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        content_file = request.FILES.get('content-file')
+        if content_file:
+            # manually overriding content with the content from the file
+            file_content = content_file.read().decode('utf-8')
+            post_data = request.POST.copy()
+            post_data['content'] = file_content
+            form = PostForm(post_data)
+        
+        else:
+            form = PostForm(request.POST)
+
         if form.is_valid():
             # Save the post to the database
             post = form.save(commit=False)
@@ -186,7 +196,6 @@ def search_posts(request):
     search_query = request.POST.get('search-query').lower().strip()
     # posts = Post.objects.filter(title__icontains=search_query)
     posts = search(search_query.replace(' ', '-'))
-    print(posts)
 
     # Get all posts that match the search query
     # posts = Post.objects.exclude(creator=request.user)

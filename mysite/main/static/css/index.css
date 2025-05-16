@@ -248,3 +248,10 @@ body {
     color: var(--main-bg);
 }
 
+
+.file-upload-btn {
+    margin-top: 1rem; 
+    margin-bottom: 1rem;
+    background-color: var(--card-color);
+    color: var(--main-color);
+}

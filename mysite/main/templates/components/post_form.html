@@ -18,7 +18,7 @@
                 Create Post
             {% endif %}
         </h1>
-        <form method="POST" class="post-form">
+        <form method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
             {% for field in form %}
                 <div class="post-form-field">
@@ -26,6 +26,8 @@
                     {{ field }}
                 </div>
             {% endfor %}
+            OR
+            <input class="file-upload-btn button rounded-pill" name="content-file" type="file">
             <button type="submit" class="button button-action">
                 {% if post %}
                     Update
