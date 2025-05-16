@@ -1,3 +1,6 @@
+from .models import Post
+from collections import Counter
+
 def get_keyboard_adjacency():
     # Define the QWERTY keyboard layout
     keyboard = [
@@ -44,26 +47,29 @@ def get_keyboard_adjacency():
 
     return adjacency_dict
 
-
-keys = get_keyboard_adjacency()
-raw_posts = ['python for beginners', 'cooking guide for new cooks']
-# Get the search query from the request
-search_query = 'puthon'.lower().replace(' ', '-').strip()
-tokens = search_query.split('-')
-print(tokens)
-posts = []
-# check each individual token for weighting
-for token in tokens:
-    match = False
-    # weight for token
-    for i in range(len(token)):
-        chars = [*keys[token[i]], token[i]]
-        for char in chars:
-            query = token[:i] + char + token[i+1:]
-            for x in raw_posts:
-                if query in x.lower():
-                    match = True
-    if not match:
-        break
+def search(search_query: str):
+    keys = get_keyboard_adjacency()
+    # Get the search query from the request
+    tokens = search_query.split('-')
+    matches = []
+    # check each individual token for weighting
+    for token in tokens:
+        # weight for token
+        for i in range(len(token)):
+            # all of the adjacent characters and the character itself
+            chars = [*keys[token[i]], token[i]]
+            for char in chars:
+                # replacing a singular character in the token with each adjacent character
+                query = token[:i] + char + token[i+1:]
+                # check if this query matches any posts with a title
+                post_matches = Post.objects.filter(title__icontains=query).all()
+                # add them all to the array of matches
+                matches.extend(post_matches)
     
-print(posts)
+    # getting the weighting by counting the number of times each post appears in the matches
+    # and putting it into a dictionary 
+    counts = Counter(matches)
+    # sorting the posts by the number of times they appear in the matches and get the top 10
+    matches = [x[0] for x in counts.most_common(10)]
+
+    return matches

@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .models import Post, Favorite, User, Rating
 from .forms import PostForm, RatingForm
-from .utils import get_keyboard_adjacency
+from .utils import get_keyboard_adjacency, search
 
 
 # Create your views here.
@@ -181,12 +181,11 @@ def search_posts(request):
     
     """
 
-    # TODO: make this a lot more advanced obviously
-    keys = get_keyboard_adjacency()
     # Get the search query from the request
-    search_query = request.GET.get('q').lower().strip()
-    tokens = search_query.split('-')
-    posts = Post.objects.filter(title__icontains=search_query)
+    search_query = request.POST.get('search-query').lower().strip()
+    # posts = Post.objects.filter(title__icontains=search_query)
+    posts = search(search_query.replace(' ', '-'))
+    print(posts)
 
     # Get all posts that match the search query
     # posts = Post.objects.exclude(creator=request.user)
@@ -198,9 +197,7 @@ def search_posts(request):
         'search_query': search_query,
     }
 
-    print(posts)
-
-    return HttpResponse('Search Posts')
+    return render(request, 'posts/search.html', context)
 
 
 def view_post(request, post_id: int):

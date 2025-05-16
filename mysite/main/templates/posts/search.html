@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Search results for {{ search_query }}{% endblock %}
+
+{% block content %}
+    <div class="center-container">
+        <h1 style="margin-bottom: 2rem;">Search results for "{{ search_query }}"</h1>
+        {% if posts %}
+            {% for post in posts %}
+                {% include 'components/post_card.html' %}
+            {% endfor %}
+        {% else %}
+            <p>No posts found...</p>
+        {% endif %}
+    </div>
+{% endblock %}
