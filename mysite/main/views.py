@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Post, Favorite, User, Rating
 from .forms import PostForm, RatingForm
 from .utils import get_keyboard_adjacency, search
+import markdown
 
 
 # Create your views here.
@@ -214,7 +215,7 @@ def view_post(request, post_id: int):
 
     # Check if the post exists
     if not post:
-        return HttpResponse('Post not found')
+        return redirect('view_posts')
     
     amount_of_ratings = Rating.objects.filter(post=post).count()
     try:
@@ -222,9 +223,13 @@ def view_post(request, post_id: int):
     except Favorite.DoesNotExist:
         is_favorite = False
 
+    md = markdown.Markdown(extensions=['fenced_code'])
+    content = md.convert(post.content)
+
     # Render the template with the post details
     context = {
         'post': post,
+        'content': content,
         'amount_of_ratings': amount_of_ratings,
         'is_favorite': is_favorite,
     }
