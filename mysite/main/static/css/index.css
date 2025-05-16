@@ -3,6 +3,7 @@
     --main-color: #E0E0E0;
     --navbar-bg: #424242;
     --primary-bold: #58CAF4;
+    --secondary: #B3E5FC;
     --card-color: #292929;
 }
 
@@ -87,8 +88,8 @@ body {
 
 .post-card {
     background-color: var(--card-color);
-    color: var(white);
-    min-width: 10rem;
+    color: var(--main-color);
+    width: 30rem;
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 5px;
@@ -96,9 +97,27 @@ body {
     list-style-type: none;
 }
 
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.star {
+    fill: #FFCA28;
+}
+
 .card-bottom {
-    font-weight: bold;
+    margin-top: 1rem;
     text-transform: capitalize;
+    display: flex;
+    gap: 1rem;
+}
+
+.category {
+    color: var(--secondary);
+    text-decoration: none;
 }
 
 
