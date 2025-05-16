@@ -21,47 +21,34 @@
                 <button id="favorites-tab" class="tab">
                     <p>Favorites</p>
                 </button>
+                <button id="my-posts-tab" class="tab">
+                    <p>My Posts</p>
+                </button>
             {% endif %}
         </div>
         <ul id="all-posts-list">
             {% for post in posts %}
-                <a class="post-card-link" href="{% url 'view_post' post_id=post.id %}">
-                    <li class="post-card">
-                            <div class="card-top">
-                                {{ post.title }}
-                                {% include 'components/stars.html' %}
-                            </div>
-                            <div class="card-bottom">
-                                {% for category in post.categories.all %}
-                                    <div class="category">
-                                        #{{ category.name }}
-                                    </div>
-                            {% endfor %}
-                        </div>
-                    </li>
-                </a>
+                {% include 'components/post_card.html' %}
             {% endfor %}
         </ul>
         {% if user.is_authenticated %}
             <ul id="favorites-list">
                 {% for favorite in favorites %}
-                    <a class="post-card-link" href="{% url 'view_post' post_id=favorite.post.id %}">
-                        <li class="post-card">
-                            <div class="card-top">
-                                {% with post=favorite.post %}
-                                    {{ post.title }}
-                                        {% include 'components/stars.html' %}
-                                    </div>
-                                {% endwith %}
-                            <div class="card-bottom">
-                                {% for category in post.categories.all %}
-                                    <div class="category">
-                                        #{{ category.name }}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </li>
-                    </a>
+                    {% with post=favorite.post %}
+                        {% include 'components/post_card.html' %}
+                    {% endwith %}
+                {% endfor %}
+            </ul>
+
+
+
+
+
+            <ul id="my-posts-list">
+                {% for post in my_posts %}
+                    {% with can_edit=1 %}
+                        {% include 'components/post_card.html' %}
+                    {% endwith %}
                 {% endfor %}
             </ul>
         {% endif %}

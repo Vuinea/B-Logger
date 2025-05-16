@@ -25,14 +25,18 @@ def view_posts(request):
 
     posts = Post.objects.all()
     if request.user.is_authenticated:
-        favorites = Favorite.objects.filter(user=request.user)
-        # rating = favorites[0].post.get_average_rating()
+        favorites = Favorite.objects.filter(user=request.user).all()
+        my_posts = Post.objects.filter(creator=request.user).all()
+
     else:
         favorites = []
+        my_posts = []
 
     context = {
         'posts': posts,
         'favorites': favorites,
+        'my_posts': my_posts,
+
     }
     
     return render(request, 'posts/posts.html', context)
