@@ -5,6 +5,7 @@
     --primary-bold: #58CAF4;
     --secondary: #B3E5FC;
     --card-color: #292929;
+    --subtitle-color: #747474;
 }
 
 body {
@@ -98,6 +99,11 @@ body {
 }
 
 
+.post-card-link {
+    text-decoration: none;
+    color: var(--main-color);
+}
+
 .card-top {
     display: flex;
     justify-content: space-between;
@@ -121,3 +127,41 @@ body {
 }
 
 
+
+.subtitle {
+    color: var(--subtitle-color);
+}
+
+.ratings {
+    display: flex;
+    gap: 1rem;
+}
+
+.post-content {
+    margin-top: 3rem;
+    width: 50%;
+    font-size: 1.3rem;
+    line-height: 2.4rem;
+}
+
+
+.favorite-btn {
+    background-color: inherit;
+    border: none;
+    cursor: pointer;
+    float: right;
+}
+
+.favorite-icon {
+    cursor: pointer;
+    fill: var(--main-color);
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    right: 4rem;
+    top: 8rem;
+}
+
+.filled-favorite-icon {
+    fill: #FF1744;
+}

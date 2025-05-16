@@ -200,13 +200,21 @@ def view_post(request, post_id: int):
     # Check if the post exists
     if not post:
         return HttpResponse('Post not found')
+    
+    amount_of_ratings = Rating.objects.filter(post=post).count()
+    try:
+        is_favorite = Favorite.objects.get(post=post, user=request.user) if request.user.is_authenticated else False
+    except Favorite.DoesNotExist:
+        is_favorite = False
 
     # Render the template with the post details
     context = {
         'post': post,
+        'amount_of_ratings': amount_of_ratings,
+        'is_favorite': is_favorite,
     }
 
-    return HttpResponse('View Post')
+    return render(request, 'posts/view_post.html', context)
 
 @login_required
 def rate_post(request, post_id: int):
