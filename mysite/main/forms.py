@@ -1,9 +1,13 @@
 from django import forms
+from .models import Post
+class PostForm(forms.ModelForm):
+    # title = forms.CharField(max_length=200, label='Title')
+    # content = forms.CharField(widget=forms.Textarea, label='Content')
+    # categories = forms.ModelMultipleChoiceField(queryset=None, label='Categories')
 
-class PostForm(forms.Form):
-    title = forms.CharField(max_length=200, label='Title')
-    content = forms.CharField(widget=forms.Textarea, label='Content')
-    categories = forms.ModelMultipleChoiceField(queryset=None, label='Categories')
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'categories']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
