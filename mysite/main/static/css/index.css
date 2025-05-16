@@ -4,6 +4,7 @@
     --navbar-bg: #424242;
     --primary-bold: #58CAF4;
     --primary-action: #81D4FA;
+    --primary-action-hover: #40C4FF;
     --secondary: #B3E5FC;
     --card-color: #292929;
     --subtitle-color: #747474;
@@ -144,6 +145,23 @@ body {
     width: 20px;
 }
 
+#create-btn {
+    background-color: var(--primary-action);
+    color: var(--main-bg);
+    border: none;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    position: absolute;
+    right: 8rem;
+    bottom: 4rem;
+    transform: scale(2);
+}
+
+#create-btn:hover {
+    background-color: var(--primary-action-hover);
+}
+
 .subtitle {
     color: var(--subtitle-color);
 }
@@ -226,6 +244,7 @@ body {
 }
 
 .button-action:hover {
-    background-color: #40C4FF    ;
+    background-color: var(--primary-action-hover);
     color: var(--main-bg);
 }
+

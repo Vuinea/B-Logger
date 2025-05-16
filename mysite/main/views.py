@@ -96,11 +96,12 @@ def create_post(request):
         if form.is_valid():
             # Save the post to the database
             post = form.save(commit=False)
-            post.author = user
+            post.creator = user
             post.save()
-            return HttpResponse('Post created successfully')
+            form.save_m2m()
+            return redirect('view_posts')
         
-    return HttpResponse('Create Post')
+    return render(request, 'posts/create_post.html', {'form': PostForm()})
 
 @login_required
 def update_post(request, post_id: int):

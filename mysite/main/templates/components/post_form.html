@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+    {% if post %}
+        Update "{{ post.title }}" 
+    {% else %}
+        Create Post
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="center-container">
+        <h1 style="margin-bottom: 3rem;">
+            {% if post %}
+                Update "{{ post.title }}"
+            {% else %}
+                Create Post
+            {% endif %}
+        </h1>
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="post-form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="button button-action">
+                {% if post %}
+                    Update
+                {% else %}
+                    Create
+                {% endif %}
+            </button>
+        </form>
+    </div>
+{% endblock %}
