@@ -3,6 +3,7 @@
     --main-color: #E0E0E0;
     --navbar-bg: #424242;
     --primary-bold: #58CAF4;
+    --primary-action: #81D4FA;
     --secondary: #B3E5FC;
     --card-color: #292929;
     --subtitle-color: #747474;
@@ -178,4 +179,53 @@ body {
 
 .filled-favorite-icon {
     fill: #FF1744;
+}
+
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+.post-form-field {
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.post-form-field label {
+    margin-bottom: 0.5rem;
+    color: var(--main-color);
+    text-transform: uppercase;
+}
+
+.post-form-field input, .post-form-field textarea, .post-form-field select {
+    background-color: var(--card-color);
+    color: var(--main-color);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+
+.button {
+    border: none;
+    border-radius: 2px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+
+}
+
+.button-action {
+    background-color: var(--primary-action);
+    color: var(--main-bg);
+    transition-property: all;
+    transition-duration: 150ms;
+}
+
+.button-action:hover {
+    background-color: #40C4FF    ;
+    color: var(--main-bg);
 }

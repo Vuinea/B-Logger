@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -116,10 +116,13 @@ def update_post(request, post_id: int):
     """
 
     # Get the post to update
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return redirect('view_posts')
     
     # Check if the user is the author of the post
-    if request.user != post.author:
+    if request.user != post.creator:
         return HttpResponse('You are not authorized to update this post')
 
     if request.method == 'POST':
@@ -127,9 +130,14 @@ def update_post(request, post_id: int):
         if form.is_valid():
             # Save the updated post to the database
             form.save()
-            return HttpResponse('Post updated successfully')
-    
-    return HttpResponse('Update Post')
+            return redirect('view_posts')
+
+    context = {
+        'form': PostForm(instance=post),
+        'post': post,
+    }
+
+    return render(request, 'posts/update_post.html', context)
 
 @login_required
 def delete_post(request, post_id: int):
@@ -145,16 +153,19 @@ def delete_post(request, post_id: int):
     """
 
     # Get the post to delete
-    post = Post.objects.get(id=post_id)
+    try:
+        post = Post.objects.get(id=post_id)
+    except Post.DoesNotExist:
+        return redirect('view_posts')
     
     # Check if the user is the author of the post
-    if request.user != post.author:
-        return HttpResponse('You are not authorized to delete this post')
+    if request.user != post.creator:
+        return redirect('view_posts')
 
     # Delete the post
     post.delete()
     
-    return HttpResponse('Post deleted successfully')
+    return redirect('view_posts')
 
 
 def search_posts(request):

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Update "{{ post.title }}" {% endblock %}
+
+{% block content %}
+    <div class="center-container">
+        <h1 style="margin-bottom: 3rem;">Update "{{ post.title }}"</h1>
+        <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="post-form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <button type="submit" class="button button-action">Update Post</button>
+        </form>
+    </div>
+{% endblock %}
