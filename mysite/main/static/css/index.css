@@ -146,7 +146,7 @@ body {
 
 
 .favorite-btn {
-    background-color: inherit;
+    background-color: var(--main-bg);
     border: none;
     cursor: pointer;
     float: right;

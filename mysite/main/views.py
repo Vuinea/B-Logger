@@ -1,9 +1,11 @@
 from django.shortcuts import render, HttpResponse
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from .models import Post, Favorite, User, Rating
 from .forms import PostForm, RatingForm
 from .utils import get_keyboard_adjacency
+
 
 # Create your views here.
 
@@ -248,6 +250,7 @@ def rate_post(request, post_id: int):
 
 
 @login_required
+@csrf_exempt
 def manage_favorite(request, post_id):
     """Endpoint to add or remove a post from favorites
 
@@ -260,13 +263,13 @@ def manage_favorite(request, post_id):
         post = Post.objects.get(id=post_id)
         user = request.user
         # checking if the favorite already exists
-        if Favorite.objects.get(post=post, user=user):
+        try:
             # Remove the favorite
             favorite = Favorite.objects.get(post=post, user=user)
             favorite.delete()
             return HttpResponse('Favorite removed successfully')
-        else:
+        except Favorite.DoesNotExist:
             # Add to favorites
-            favorite = Favorite(post, user)
+            favorite = Favorite(post=post, user=user)
             favorite.save()
             return HttpResponse('Favorite added successfully')
