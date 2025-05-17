@@ -42,3 +42,16 @@ myPostsTab.addEventListener('click', () => {
 })
 
 
+const dropdownBtn = document.getElementById('category-dropdown-btn');
+const dropdownMenu = document.getElementById('category-dropdown-menu');
+
+dropdownBtn.addEventListener('click', function () {
+    dropdownMenu.classList.toggle('hidden');
+});
+
+// close the dropdown if clicked outside
+document.addEventListener('click', function (event) {
+    if (!dropdownBtn.contains(event.target) && !dropdownMenu.contains(event.target)) {
+        dropdownMenu.classList.add('hidden');
+    }
+});

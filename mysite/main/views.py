@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-from .models import Post, Favorite, User, Rating
+from .models import Post, Favorite, User, Rating, Category
 from .forms import PostForm, RatingForm
 from .utils import get_keyboard_adjacency, search
 import markdown
@@ -33,51 +33,18 @@ def view_posts(request):
         favorites = []
         my_posts = []
 
+    categories = Category.objects.all()
+
     context = {
         'posts': posts,
         'favorites': favorites,
         'my_posts': my_posts,
+        'categories': categories,
 
     }
     
     return render(request, 'posts/posts.html', context)
 
-
-@login_required
-def manage_posts(request):
-    """Allows users to manage their own posts
-
-    Args:
-        request (HTTPRequest): Request sent in from the browser
-
-    Returns:
-        A template that displays the user's posts
-    """
-
-    # TODO: Implement the search into this page
-
-    # Get the current user
-    user = request.user
-
-    # Get all posts created by the user
-    posts = Post.objects.filter(author=user)
-    
-    # Get favorites
-    favorites = Favorite.objects.filter(user=user)
-
-
-    # Render the template with the user's posts
-    context = {
-        'user': user,
-        'posts': posts,
-        'favorites': favorites,
-    }
-
-    print(context)
-    
-    return HttpResponse(
-        'hello world'
-    )
 
 
 @login_required
@@ -194,8 +161,9 @@ def search_posts(request):
 
     # Get the search query from the request
     search_query = request.POST.get('search-query').lower().strip()
+    categories = request.POST.getlist('category-filters')
     # posts = Post.objects.filter(title__icontains=search_query)
-    posts = search(search_query.replace(' ', '-'))
+    posts = search(search_query.replace(' ', '-'), categories)
 
     # Get all posts that match the search query
     # posts = Post.objects.exclude(creator=request.user)

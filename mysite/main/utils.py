@@ -1,4 +1,5 @@
 from .models import Post
+from django.db.models import Count
 from collections import Counter
 
 def get_keyboard_adjacency():
@@ -47,7 +48,7 @@ def get_keyboard_adjacency():
 
     return adjacency_dict
 
-def search(search_query: str):
+def search(search_query: str, categories: list=[]):
     keys = get_keyboard_adjacency()
     # Get the search query from the request
     tokens = search_query.split('-')
@@ -61,8 +62,8 @@ def search(search_query: str):
             for char in chars:
                 # replacing a singular character in the token with each adjacent character
                 query = token[:i] + char + token[i+1:]
-                # check if this query matches any posts with a title
-                post_matches = Post.objects.filter(title__icontains=query).all()
+                # check if this query matches any posts with a title and exact same categories
+                post_matches = Post.objects.filter(title__icontains=query, categories__in=categories).annotate(num_matching_categories=Count('categories')).filter(num_matching_categories=len(categories)).distinct()
                 # add them all to the array of matches
                 matches.extend(post_matches)
     
