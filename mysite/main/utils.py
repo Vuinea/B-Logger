@@ -63,7 +63,10 @@ def search(search_query: str, categories: list=[]):
                 # replacing a singular character in the token with each adjacent character
                 query = token[:i] + char + token[i+1:]
                 # check if this query matches any posts with a title and exact same categories
-                post_matches = Post.objects.filter(title__icontains=query, categories__in=categories).annotate(num_matching_categories=Count('categories')).filter(num_matching_categories=len(categories)).distinct()
+                if len(categories) > 0:
+                    post_matches = Post.objects.filter(title__icontains=query, categories__in=categories).annotate(num_matching_categories=Count('categories')).filter(num_matching_categories=len(categories)).distinct()
+                else:
+                    post_matches = Post.objects.filter(title__icontains=query)
                 # add them all to the array of matches
                 matches.extend(post_matches)
     

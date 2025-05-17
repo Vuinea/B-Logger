@@ -203,12 +203,16 @@ def view_post(request, post_id: int):
     md = markdown.Markdown(extensions=['fenced_code'])
     content = md.convert(post.content)
     
-    try:
-        user_rating = Rating.objects.get(post=post, user=request.user) if request.user.is_authenticated else None
-        empty_stars = 5 - user_rating.rating
-    except Rating.DoesNotExist:
+    if request.user.is_authenticated:
+        try:
+            user_rating = Rating.objects.get(post=post, user=request.user) if request.user.is_authenticated else None
+            empty_stars = 5 - user_rating.rating
+        except Rating.DoesNotExist:
+            user_rating = 0
+            empty_stars = 5
+    else:
         user_rating = 0
-        empty_stars = 5
+        empty_stars = 0
 
     # Render the template with the post details
     context = {
