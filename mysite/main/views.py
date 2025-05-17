@@ -202,6 +202,13 @@ def view_post(request, post_id: int):
 
     md = markdown.Markdown(extensions=['fenced_code'])
     content = md.convert(post.content)
+    
+    try:
+        user_rating = Rating.objects.get(post=post, user=request.user) if request.user.is_authenticated else None
+        empty_stars = 5 - user_rating.rating
+    except Rating.DoesNotExist:
+        user_rating = 0
+        empty_stars = 5
 
     # Render the template with the post details
     context = {
@@ -209,11 +216,14 @@ def view_post(request, post_id: int):
         'content': content,
         'amount_of_ratings': amount_of_ratings,
         'is_favorite': is_favorite,
+        'user_rating': user_rating,
+        'empty_stars': empty_stars,
     }
 
     return render(request, 'posts/view_post.html', context)
 
 @login_required
+@csrf_exempt
 def rate_post(request, post_id: int):
     """Endpoint to send a rating for a post
 
@@ -230,14 +240,16 @@ def rate_post(request, post_id: int):
             post = Post.objects.get(id=post_id)
             user = request.user
             # checking if the rating already exists
-            if Rating.objects.get(post=post, user=user):
+            try:
                 # Update the existing rating
                 rating = Rating.objects.get(post=post, user=user)
                 rating.rating = rating_data
                 rating.save()
-            else:
-                rating = Rating(post, user, rating_data)
+            except Rating.DoesNotExist:
+                rating = Rating(post=post, user=user, rating=rating_data)
                 rating.save()
+        else:
+            print(form.errors)
             
             return HttpResponse('Rating saved successfully')
         

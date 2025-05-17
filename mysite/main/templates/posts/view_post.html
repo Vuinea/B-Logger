@@ -2,6 +2,8 @@
 
 {% block title %}View - {{ post.title }}{% endblock %}
 
+{% load custom_tags %}
+
 {% block content %}
      {# heart #}
      <button id="favorite-btn">
@@ -32,6 +34,22 @@
                 {% endif %}
             </span>
         </div>
+        {% if user.is_authenticated %}
+            <div style="margin-top: 1rem;" class="user-rating">
+                <h4>My Rating</h4>
+                <div style="display: flex; gap: 0.1rem;">
+                    {% for i in 5|times %}
+                        <button class="star-btn" style="border: none; background-color: inherit; color: inherit;" id="user-rating-{{ i|add:1 }}">
+                            {% if i|add:1 <= user_rating %}
+                                {% include 'components/stars/full_star.html' %}
+                            {% else %}
+                                {% include 'components/stars/empty_star.html' %}
+                            {% endif %}
+                        </button>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
         <div class="post-content">
             <p>{{ content|safe }}</p>
         </div>
