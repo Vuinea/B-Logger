@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+
+{% block content %}
+  <div class="center-container">
+    <h1>Register</h1>
+    <form method="post" class="auth-form">
+      {% csrf_token %}
+      {% for field in form %}
+                <div class="post-form-field">
+                    {{ field.label_tag }}
+                    {{ field }}
+                </div>
+        {% endfor %}
+      <p>
+        Already have an account? Login 
+        <a href="/auth/login" style="color: white;">here</a>
+      </p>
+      <button id="register-btn" class="button button-action">Register</button>  
+      
+    </form>  
+  </div>
+{% endblock %}

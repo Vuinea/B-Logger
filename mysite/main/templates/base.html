@@ -16,10 +16,15 @@
         <a class="h1 text-decoration-none" href="/posts">B-Logger</a>
         <div class="auth-links">
             {% if user.is_authenticated %}
-                <a class="auth-link" href="#">Logout</a>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button style="border: none; background-color: inherit;" class="auth-link">
+                        Logout
+                    </button>
+                </form>
             {% else %}
-                <a class="auth-link" href="#">Login</a>
-                <a class="auth-link" href="#">Register</a>
+                <a class="auth-link" href="{% url 'login' %}">Login</a>
+                <a class="auth-link" href="{% url 'register' %}">Register</a>
             {% endif %}
         </div>
     </div>
